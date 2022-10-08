@@ -2,6 +2,7 @@
 
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import { ParsedUrlQuery } from "querystring";
+import AnimalsCardsList from "../../components/AnimalCardsList";
 import {
   Animal,
   AnimalType,
@@ -100,7 +101,7 @@ export const getStaticProps: GetStaticProps<
     props: {
       type: {
         ...(type || {}),
-        id: params.type,
+        id: params?.type,
         breeds,
       },
       adoptedAnimals,
@@ -109,7 +110,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths = [];
+  let paths = [] as [];
 
   try {
     const accessToken = await getAccessToken();
@@ -140,11 +141,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const TypePage: NextPage<TypePageProps> = () => (
+const TypePage: NextPage<TypePageProps> = ({ adoptedAnimals, type }) => (
   <main>
     <section className="relative mb-7" id="overview">
       <h1 className="text-7xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-        Lorem Ipsum
+        {type.name}
       </h1>
       <p className="mt-7 text-2xl text-gray-400">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -160,6 +161,7 @@ const TypePage: NextPage<TypePageProps> = () => (
       <h3 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-7">
         Recently Adopted
       </h3>
+      <AnimalsCardsList animals={adoptedAnimals} />
     </section>
   </main>
 );
