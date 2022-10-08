@@ -12,6 +12,8 @@ const config = {
     images: { allowFutureImage: true, unoptimized: !!NEXT_EXPORT },
   },
   images: {
+    loader: "akamai",
+    path: "",
     domains: [
       "images.unsplash.com",
       "via.placeholder.com",
