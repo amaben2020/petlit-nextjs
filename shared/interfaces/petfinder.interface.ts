@@ -183,4 +183,5 @@ type ILoadImageReturn = {
   height: number;
   width: number;
   type?: string;
+  objectPosition?: string;
 };

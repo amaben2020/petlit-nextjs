@@ -48,9 +48,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
           return {
             ...type,
-            id: type?._links?.self.href.match(/\/types\/([\w-]+)$/)[1],
+            id: (type._links.self.href.match(/\/types\/([\w-]+)$/) || "")[1],
             blurhash,
-            img,
+            img: {
+              ...img,
+              objectPosition:
+                ANIMAL_TYPES[type.name].image.styles?.objectPosition ||
+                "center",
+            },
           };
         })
       );

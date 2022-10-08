@@ -35,7 +35,8 @@ const TypeCard: FC<TypeCardProps> = ({ className, type }) => (
         )}
         {type.img && (
           <Image
-            {...type.img}
+            src={type.img.src}
+            objectPosition={type.img.objectPosition}
             alt={type.name}
             layout="fill"
             objectFit="cover"
