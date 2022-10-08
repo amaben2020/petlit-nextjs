@@ -11,3 +11,5 @@ export const { access_token } = await (
     }),
   })
 ).json();
+
+//   const accessToken = await getAccessToken();

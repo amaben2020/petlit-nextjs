@@ -23,24 +23,6 @@ const {
   PETFINDER_ACCESS_TOKEN,
 } = process.env;
 
-const getAccessToken = async () => {
-  const { access_token } = await (
-    await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/oauth2/token`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        grant_type: "client_credentials",
-        client_id: NEXT_PUBLIC_PETFINDER_CLIENT_ID,
-        client_secret: NEXT_PUBLIC_PETFINDER_CLIENT_SECRET,
-      }),
-    })
-  ).json();
-
-  return access_token;
-};
-
 interface PageProps {
   type: AnimalType;
   adoptedAnimals: Animal[];
@@ -49,6 +31,36 @@ interface PageProps {
 interface StaticPathParams extends ParsedUrlQuery {
   type: string;
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  let paths = [] as any;
+
+  try {
+    const { types }: AnimalTypesResponse = await (
+      await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/types`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${PETFINDER_ACCESS_TOKEN}`,
+        },
+      })
+    ).json();
+
+    if (types.length > 0) {
+      paths = types.map((type) => ({
+        params: {
+          type: (type._links.self.href.match(/\/types\/([\w-]+)$/) || "")[1],
+        },
+      }));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  return {
+    paths,
+    fallback: false, // Return a 404 page for a non-existent type.
+  };
+};
 
 export const getStaticProps: GetStaticProps<
   PageProps,
@@ -106,38 +118,6 @@ export const getStaticProps: GetStaticProps<
       },
       adoptedAnimals,
     },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  let paths = [] as any;
-
-  try {
-    const accessToken = await getAccessToken();
-
-    const { types }: AnimalTypesResponse = await (
-      await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/types`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-    ).json();
-
-    if (types.length > 0) {
-      paths = types.map((type) => ({
-        params: {
-          type: (type._links.self.href.match(/\/types\/([\w-]+)$/) || "")[1],
-        },
-      }));
-    }
-  } catch (err) {
-    console.error(err);
-  }
-
-  return {
-    paths,
-    fallback: false, // Return a 404 page for a non-existent type.
   };
 };
 
