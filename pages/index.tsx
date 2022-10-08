@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       types:
         types.length > 0
-          ? types.map((type) => ({
+          ? types?.map((type) => ({
               ...type,
               // adding unique id to each array element
               id: (type._links.self.href.match(/\/types\/([\w-]+)$/) || "")[1],
