@@ -1,8 +1,14 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app";
+import "../styles/globals.css"; // If you have not yet installed TailwindCSS in the Next.js application, then consult the documentation for installing TailwindCSS in a Next.js application: https://tailwindcss.com/docs/guides/nextjs.
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps }: AppProps) {
+  return (
+    <div className="bg-gray-100 py-8 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Component {...pageProps} />
+      </div>
+    </div>
+  );
 }
 
-export default MyApp
+export default App;
