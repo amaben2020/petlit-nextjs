@@ -122,6 +122,8 @@ export interface AnimalTypeBreed {
 
 export interface AnimalType {
   id?: string;
+  blurhash?: IGetBlurhashReturn;
+  img?: ILoadImageReturn;
   name: string;
   coats: string[];
   colors: string[];
@@ -169,3 +171,16 @@ export interface TokenResponse {
   expires_in: 3600;
   access_token: string;
 }
+
+// Source: https://github.com/joe-bell/plaiceholder/blob/main/packages/plaiceholder/src/blurhash.ts#L8
+type IGetBlurhashReturn = {
+  hash: string;
+} & Record<"width" | "height", number>;
+
+// Source: https://github.com/joe-bell/plaiceholder/blob/main/packages/plaiceholder/src/get-image.ts#L62
+type ILoadImageReturn = {
+  src: string;
+  height: number;
+  width: number;
+  type?: string;
+};
