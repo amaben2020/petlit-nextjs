@@ -110,7 +110,7 @@ export const getStaticProps: GetStaticProps<
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths = [] as [];
+  let paths = [] as any;
 
   try {
     const accessToken = await getAccessToken();
