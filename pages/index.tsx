@@ -1,18 +1,14 @@
 import { NextPage, GetStaticProps } from "next";
-import { AnimalType } from "../shared/interfaces/petfinder.interface";
-import TypeCardsGrid from "../components/TypeCardsGrid";
 import { getPlaiceholder } from "plaiceholder";
 import { ANIMAL_TYPES } from "../enums";
+import { AnimalType } from "../shared/interfaces/petfinder.interface";
+import TypeCardsGrid from "../components/TypeCardsGrid";
+
 export interface HomePageProps {
   types: AnimalType[];
 }
 
-const {
-  NEXT_PUBLIC_PETFINDER_API_URL,
-  NEXT_PUBLIC_PETFINDER_CLIENT_ID,
-  NEXT_PUBLIC_PETFINDER_CLIENT_SECRET,
-  PETFINDER_ACCESS_TOKEN,
-} = process.env;
+const { NEXT_PUBLIC_PETFINDER_API_URL, PETFINDER_ACCESS_TOKEN } = process.env;
 
 export const getStaticProps: GetStaticProps = async () => {
   let types: AnimalType[] = [];
@@ -26,9 +22,10 @@ export const getStaticProps: GetStaticProps = async () => {
         },
       })
     ).json());
+
     if (types.length > 0) {
       types = await Promise.all(
-        types?.map(async (type) => {
+        types.map(async (type) => {
           const { blurhash, img } = await getPlaiceholder(
             ANIMAL_TYPES[type.name].image.url
           );
