@@ -20,6 +20,7 @@ const {
   NEXT_PUBLIC_PETFINDER_API_URL,
   NEXT_PUBLIC_PETFINDER_CLIENT_ID,
   NEXT_PUBLIC_PETFINDER_CLIENT_SECRET,
+  PETFINDER_ACCESS_TOKEN,
 } = process.env;
 
 const getAccessToken = async () => {
@@ -60,13 +61,11 @@ export const getStaticProps: GetStaticProps<
   let { type: typeParam } = params as StaticPathParams;
 
   try {
-    const accessToken = await getAccessToken();
-
     ({ type } = await (
       await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/types/${typeParam}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${PETFINDER_ACCESS_TOKEN}`,
         },
       })
     ).json());
@@ -77,7 +76,7 @@ export const getStaticProps: GetStaticProps<
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${PETFINDER_ACCESS_TOKEN}`,
           },
         }
       )
@@ -89,7 +88,7 @@ export const getStaticProps: GetStaticProps<
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${PETFINDER_ACCESS_TOKEN}`,
           },
         }
       )

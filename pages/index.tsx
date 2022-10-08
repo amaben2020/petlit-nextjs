@@ -11,31 +11,18 @@ const {
   NEXT_PUBLIC_PETFINDER_API_URL,
   NEXT_PUBLIC_PETFINDER_CLIENT_ID,
   NEXT_PUBLIC_PETFINDER_CLIENT_SECRET,
+  PETFINDER_ACCESS_TOKEN,
 } = process.env;
 
 export const getStaticProps: GetStaticProps = async () => {
   let types: AnimalType[] = [];
 
   try {
-    const { access_token } = await (
-      await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/oauth2/token`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          grant_type: "client_credentials",
-          client_id: NEXT_PUBLIC_PETFINDER_CLIENT_ID,
-          client_secret: NEXT_PUBLIC_PETFINDER_CLIENT_SECRET,
-        }),
-      })
-    ).json();
-
     ({ types } = await (
       await fetch(`${NEXT_PUBLIC_PETFINDER_API_URL}/types`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
+          Authorization: `Bearer ${PETFINDER_ACCESS_TOKEN}`,
         },
       })
     ).json());
